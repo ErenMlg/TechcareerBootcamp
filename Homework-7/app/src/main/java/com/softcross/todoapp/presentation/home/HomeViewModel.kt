@@ -41,4 +41,12 @@ class HomeViewModel @Inject constructor(
         getTodo()
     }
 
+    fun search(query: String) = viewModelScope.launch {
+        toDosRepository.search(query).collect { response ->
+            when (response) {
+                is ResponseState.Success -> _todoState.value = ScreenState.Success(response.result)
+                else -> { }
+            }
+        }
+    }
 }
